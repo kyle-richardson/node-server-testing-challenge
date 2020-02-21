@@ -1,33 +1,19 @@
-/*
-- when making a GET request to the `/` endpoint 
-  the API should respond with status code 200 
-  and the following JSON object: `{ api: 'running' }`.
-*/
-const request = require("supertest"); // calling it "request" is a common practice
+const request = require("supertest");
 
-const server = require("./server.js"); // this is our first red, file doesn't exist yet
+const server = require("./server.js");
 
 describe("server.js", () => {
-  // http calls made with supertest return promises, we can use async/await if desired
   describe("index route", () => {
-    it("should set testint env", () => {
-      expect(process.env.DB_ENV.toBe("testing"));
+    it("should set testing env", () => {
+      expect(process.env.DB_ENV).toBe("testing");
     });
+
     it("should return an OK status code from the index route", async () => {
       const expectedStatusCode = 200;
 
-      // do a get request to our api (server.js) and inspect the response
       const response = await request(server).get("/");
 
       expect(response.status).toEqual(expectedStatusCode);
-
-      // same test using promise .then() instead of async/await
-      // let response;
-      // return request(server).get('/').then(res => {
-      //   response = res;
-
-      //   expect(response.status).toEqual(expectedStatusCode);
-      // })
     });
 
     it("should return a JSON object from the index route", async () => {
@@ -43,5 +29,14 @@ describe("server.js", () => {
 
       expect(response.type).toEqual("application/json");
     });
-  });
+  }),
+    describe("games route", () => {
+      it("should return 201 status code to get games", async () => {
+        const expectedStatusCode = 201;
+
+        const response = await request(server).get("/api/games");
+
+        expect(response.status).toEqual(expectedStatusCode);
+      });
+    });
 });
