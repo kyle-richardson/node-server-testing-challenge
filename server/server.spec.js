@@ -10,6 +10,9 @@ const server = require("./server.js"); // this is our first red, file doesn't ex
 describe("server.js", () => {
   // http calls made with supertest return promises, we can use async/await if desired
   describe("index route", () => {
+    it("should set testint env", () => {
+      expect(process.env.DB_ENV.toBe("testing"));
+    });
     it("should return an OK status code from the index route", async () => {
       const expectedStatusCode = 200;
 
